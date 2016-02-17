@@ -1,4 +1,5 @@
-# cpm-validator
+# cpm-validator [![Build Status](https://travis-ci.org/Interencheres/cpm-validator.svg?branch=master)](https://travis-ci.org/Interencheres/cpm-validator) [![Coverage Status](https://coveralls.io/repos/github/Interencheres/cpm-validator/badge.svg?branch=master)](https://coveralls.io/github/Interencheres/cpm-validator?branch=master) [![bitHound Overall Score](https://www.bithound.io/github/Interencheres/cpm-validator/badges/score.svg)](https://www.bithound.io/github/Interencheres/cpm-validator) [![bitHound Dependencies](https://www.bithound.io/github/Interencheres/cpm-validator/badges/dependencies.svg)](https://www.bithound.io/github/Interencheres/cpm-validator/master/dependencies/npm)
+
 Simple compilation of function for validate type, JSON, ...
 
 ## Pré-requis
