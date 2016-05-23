@@ -48,7 +48,7 @@ class Validator {
      */
     areFieldsValid (parameters, schema) {
         let errors = [];
-        parameters = _.omit(parameters, ["sort", "id", "-id"]);
+        parameters = _.omit(parameters, ["sort", "id", "-id", "created", "-created"]);
 
         for (let parameter of _.keys(parameters)) {
             this.logger.trace(parameter);
