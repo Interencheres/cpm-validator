@@ -74,6 +74,43 @@ class Validator {
         return true;
     }
 
+    checkKeys (fields, schema, errors) {
+        let base = {};
+        Object.assign(base, schema.properties);
+
+        for (let key of this.getKeys(fields)) {
+            this.logger.trace(`Checking ${key} is in schema`);
+
+            if (key in base) {
+                base = base[key].properties;
+            } else {
+                errors.push(`Key ${key} not found in schema`);
+                break;
+            }
+        }
+
+        return errors;
+    }
+
+    getKeys (object, keys) {
+        if (!keys) {
+            keys = [];
+        }
+
+        for (let key in object) {
+            if (object.hasOwnProperty(key)) {
+                keys.push(key);
+                // jshint -W073
+                if (typeof(object[key]) === "object") {
+                    this.getKeys(object[key], keys);
+                }
+                // jshint +W073
+            }
+        }
+
+        return keys;
+    }
+
     /**
      * JSON schema validator for fields, handle '-'
      * append to errors, should probably return a boolean and log them
