@@ -42,8 +42,6 @@ class Validator {
     }
 
     /**
-     * simple field validator, might belong to validator module
-     * logs errors
      * @return boolean
      */
     areFieldsValid (parameters, schema) {
