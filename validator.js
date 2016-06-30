@@ -22,7 +22,7 @@ class Validator {
 
         for (value of values) {
             if (list.indexOf(value.replace(/^-/, "")) === -1) {
-                this.logger.error(`${value.replace(/^-/, "")} not found in model`);
+                this.logger.error(`${value.replace(/^-/, "")} not found in list`);
                 return false;
             }
         }
@@ -86,7 +86,7 @@ class Validator {
         let value = _.values(parameter)[0];
 
         if (!this.isJsonSchemaValid(value, schema.properties[field])) {
-            errors.push(`sort field ${JSON.stringify(parameter)} not valid`);
+            errors.push(`field ${JSON.stringify(parameter)} not valid`);
         }
 
         return errors;
