@@ -54,11 +54,14 @@ class Validator {
 
             // Only get part before bracket, if any
             if (!this.inList(field.split("[")[0], _.keys(schema.properties))) {
+                this.logger.trace("Checking root parameters");
                 errors.push(`field ${field.split("[")[0]} not valid`);
             } else if (field.includes("[")) {
+                this.logger.trace("Checking object as string");
                 // translate string to JSON
                 errors = this.checkKeys(qs.parse(field), schema, errors);
             } else if (schema.properties[field].type === "object") {
+                this.logger.trace("Checking object");
                 // re-build a full JSON from its key and value
                 let parameterObj = {};
                 parameterObj[field] = parameters[field];
