@@ -22,7 +22,7 @@ class Validator {
 
         for (value of values) {
             if (list.indexOf(value.replace(/^-/, "")) === -1) {
-                this.logger.error(`${value.replace(/^-/, "")} not found in model`);
+                this.logger.error(`${value.replace(/^-/, "")} not found in list`);
                 return false;
             }
         }
@@ -42,8 +42,6 @@ class Validator {
     }
 
     /**
-     * simple field validator, might belong to validator module
-     * logs errors
      * @return boolean
      */
     areFieldsValid (parameters, schema) {
@@ -56,15 +54,18 @@ class Validator {
 
             // Only get part before bracket, if any
             if (!this.inList(field.split("[")[0], _.keys(schema.properties))) {
+                this.logger.trace("Checking root parameters");
                 errors.push(`field ${field.split("[")[0]} not valid`);
             } else if (field.includes("[")) {
+                this.logger.trace("Checking object as string");
                 // translate string to JSON
-                errors = this.checkJson(qs.parse(field), schema, errors);
+                errors = this.checkKeys(qs.parse(field), schema, errors);
             } else if (schema.properties[field].type === "object") {
+                this.logger.trace("Checking object");
                 // re-build a full JSON from its key and value
                 let parameterObj = {};
                 parameterObj[field] = parameters[field];
-                errors = this.checkJson(parameterObj, schema, errors);
+                errors = this.checkKeys(parameterObj, schema, errors);
             }
         }
 
@@ -74,6 +75,43 @@ class Validator {
         }
 
         return true;
+    }
+
+    checkKeys (fields, schema, errors) {
+        let base = {};
+        Object.assign(base, schema.properties);
+
+        for (let key of this.getKeys(fields)) {
+            this.logger.trace(`Checking ${key} is in schema`);
+
+            if (key in base) {
+                base = base[key].properties;
+            } else {
+                errors.push(`Key ${key} not found in schema`);
+                break;
+            }
+        }
+
+        return errors;
+    }
+
+    getKeys (object, keys) {
+        if (!keys) {
+            keys = [];
+        }
+
+        for (let key in object) {
+            if (object.hasOwnProperty(key)) {
+                keys.push(key);
+                // jshint -W073
+                if (typeof(object[key]) === "object") {
+                    this.getKeys(object[key], keys);
+                }
+                // jshint +W073
+            }
+        }
+
+        return keys;
     }
 
     /**
@@ -86,7 +124,7 @@ class Validator {
         let value = _.values(parameter)[0];
 
         if (!this.isJsonSchemaValid(value, schema.properties[field])) {
-            errors.push(`sort field ${JSON.stringify(parameter)} not valid`);
+            errors.push(`field ${JSON.stringify(parameter)} not valid`);
         }
 
         return errors;
