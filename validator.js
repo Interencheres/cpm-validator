@@ -75,6 +75,57 @@ class Validator {
     }
 
     /**
+     * Check the path exists in the schema
+     *
+     * @param {Object} path
+     * @param {Object} schema
+     * @returns {boolean}
+     */
+    isPathValid (path, schema) {
+        let base = {};
+        Object.assign(base, schema.properties);
+
+        for (let key of this.getKeys(path)) {
+            this.logger.trace(`Checking ${key} is in schema`);
+
+            if (key in base) {
+                base = base[key].properties;
+            } else {
+                this.logger.error(`Key ${key} not found in schema`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Recursive method to get a list of elements composing a path
+     *
+     * @param {Object} path
+     * @param {Array} keys
+     * @returns {Array}
+     */
+    getKeys (path, keys) {
+        if (!keys) {
+            keys = [];
+        }
+
+        for (let key in path) {
+            if (path.hasOwnProperty(key)) {
+                keys.push(key);
+                // jshint -W073
+                if (typeof(path[key]) === "object") {
+                    this.getKeys(path[key], keys);
+                }
+                // jshint +W073
+            }
+        }
+
+        return keys;
+    }
+
+    /**
      * JSON schema validator for fields, handle '-'
      * append to errors, should probably return a boolean and log them
      * @return list
