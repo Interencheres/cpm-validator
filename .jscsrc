@@ -49,6 +49,5 @@
   },
   "requireTemplateStrings": true,
   "excludeFiles": ["docs/**", "node_modules/**", ".git/**", "coverage/**"],
-  "esnext": true,
   "requireCapitalizedConstructors": true
 }
