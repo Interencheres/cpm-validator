@@ -38,16 +38,16 @@
     "node": "4.2.x"
   },
   "dependencies": {
-    "is-my-json-valid": "^2.12.3",
-    "lodash": "^4.11.1",
-    "qs": "^6.0.1"
+    "is-my-json-valid": "^2.13.1",
+    "lodash": "^4.13.1",
+    "qs": "^6.2.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
     "coveralls": "^2.11.4",
     "cpm-logger": "git+https://github.com/Interencheres/cpm-logger.git#v1.0.0",
     "istanbul": "^0.4.0",
-    "jscs": "^2.5.1",
+    "jscs": "^3.0.5",
     "jshint": "^2.8.0",
     "mocha": "^2.3.4"
   }
