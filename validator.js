@@ -57,12 +57,12 @@ class Validator {
                 errors.push(`field ${field.split("[")[0]} not valid`);
             } else if (field.includes("[")) {
                 // translate string to JSON
-                errors = this.checkJson(qs.parse(field), schema, errors);
+                errors = this.checkKeys(qs.parse(field), schema, errors);
             } else if (schema.properties[field].type === "object") {
                 // re-build a full JSON from its key and value
                 let parameterObj = {};
                 parameterObj[field] = parameters[field];
-                errors = this.checkJson(parameterObj, schema, errors);
+                errors = this.checkKeys(parameterObj, schema, errors);
             }
         }
 
