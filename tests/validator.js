@@ -212,6 +212,17 @@ describe("Core validators", function () {
             };
             validator.isPathValid(payload, schema).should.be.true;
         });
+        it("Valid paths", function () {
+            let payload = [
+                {
+                    name: { first: "" }
+                },
+                {
+                    description: ""
+                }
+            ];
+            validator.arePathsValid(payload, schema).should.be.true;
+        });
         it("Invalid path", function () {
             let payload = {
                 options: {
@@ -219,6 +230,20 @@ describe("Core validators", function () {
                 }
             };
             validator.isPathValid(payload, schema).should.be.false;
+        });
+        it("One invalid path", function () {
+            let payload = [
+                {
+                    name: { first: "" }
+                },
+                {
+                    description: ""
+                },
+                {
+                    name: { foo: "" }
+                }
+            ];
+            validator.arePathsValid(payload, schema).should.be.false;
         });
     });
 });

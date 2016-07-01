@@ -94,6 +94,25 @@ class Validator {
     }
 
     /**
+     * Check all the paths exist in the schema
+     *
+     * @param {Object} paths
+     * @param {Object} schema
+     * @returns {boolean}
+     */
+    arePathsValid (paths, schema) {
+        let valid = true;
+
+        for (let path of paths) {
+            if (!this.isPathValid(path, schema)) {
+                valid = false;
+            }
+        }
+
+        return valid;
+    }
+
+    /**
      * Check the path exists in the schema
      *
      * @param {Object} path
