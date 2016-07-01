@@ -9,6 +9,10 @@ class Validator {
         this.logger = logger;
     }
 
+    /**
+     * @param {string} value
+     * @returns {boolean}
+     */
     isInt (value) {
         let numValue = Number(value);
         let isBoolean = (typeof value === "boolean");
@@ -17,6 +21,11 @@ class Validator {
         return !isBoolean && isInteger;
     }
 
+    /**
+     * @param {string} value
+     * @param {Array} list
+     * @returns {boolean}
+     */
     inList (value, list) {
         let values = value.split(",");
 
@@ -30,6 +39,11 @@ class Validator {
         return true;
     }
 
+    /**
+     * @param {Object} json
+     * @param {Object} schema
+     * @returns {boolean}
+     */
     isJsonSchemaValid (json, schema) {
         let validate = jsonValidator(schema, { verbose: true, greedy: true });
 
@@ -42,7 +56,9 @@ class Validator {
     }
 
     /**
-     * @return boolean
+     * @param {Object} parameters
+     * @param {Object} schema
+     * @returns {boolean}
      */
     areFieldsValid (parameters, schema) {
         let errors = [];
@@ -131,7 +147,11 @@ class Validator {
     /**
      * JSON schema validator for fields, handle '-'
      * append to errors, should probably return a boolean and log them
-     * @return list
+     *
+     * @param {Object} parameter
+     * @param {Object} schema
+     * @param {Array} errors
+     * @returns {Array}
      */
     checkJson (parameter, schema, errors) {
         let field = _.keys(parameter)[0];
