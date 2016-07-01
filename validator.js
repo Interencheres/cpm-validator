@@ -75,13 +75,13 @@ class Validator {
             } else if (field.includes("[")) {
                 this.logger.trace("Checking object as string");
                 // translate string to JSON
-                errors = this.checkJson(qs.parse(field), schema, errors);
+                errors = this.checkPartialJson(qs.parse(field), schema, errors);
             } else if (schema.properties[field].type === "object") {
                 this.logger.trace("Checking object");
                 // re-build a full JSON from its key and value
                 let parameterObj = {};
                 parameterObj[field] = parameters[field];
-                errors = this.checkJson(parameterObj, schema, errors);
+                errors = this.checkPartialJson(parameterObj, schema, errors);
             }
         }
 
@@ -153,7 +153,7 @@ class Validator {
      * @param {Array} errors
      * @returns {Array}
      */
-    checkJson (parameter, schema, errors) {
+    checkPartialJson (parameter, schema, errors) {
         let field = _.keys(parameter)[0];
         let value = _.values(parameter)[0];
 
