@@ -9,6 +9,10 @@ class Validator {
         this.logger = logger;
     }
 
+    /**
+     * @param {String} value
+     * @returns {Boolean}
+     */
     isInt (value) {
         let numValue = Number(value);
         let isBoolean = (typeof value === "boolean");
@@ -17,12 +21,17 @@ class Validator {
         return !isBoolean && isInteger;
     }
 
+    /**
+     * @param {String} value
+     * @param {Array} list
+     * @returns {Boolean}
+     */
     inList (value, list) {
         let values = value.split(",");
 
         for (value of values) {
             if (list.indexOf(value.replace(/^-/, "")) === -1) {
-                this.logger.error(`${value.replace(/^-/, "")} not found in model`);
+                this.logger.error(`${value.replace(/^-/, "")} not found in list`);
                 return false;
             }
         }
@@ -30,6 +39,11 @@ class Validator {
         return true;
     }
 
+    /**
+     * @param {Object} json
+     * @param {Object} schema
+     * @returns {Boolean}
+     */
     isJsonSchemaValid (json, schema) {
         let validate = jsonValidator(schema, { verbose: true, greedy: true });
 
@@ -42,9 +56,9 @@ class Validator {
     }
 
     /**
-     * simple field validator, might belong to validator module
-     * logs errors
-     * @return boolean
+     * @param {Object} parameters
+     * @param {Object} schema
+     * @returns {Boolean}
      */
     areFieldsValid (parameters, schema) {
         let errors = [];
@@ -56,15 +70,18 @@ class Validator {
 
             // Only get part before bracket, if any
             if (!this.inList(field.split("[")[0], _.keys(schema.properties))) {
+                this.logger.trace("Checking root parameters");
                 errors.push(`field ${field.split("[")[0]} not valid`);
             } else if (field.includes("[")) {
+                this.logger.trace("Checking object as string");
                 // translate string to JSON
-                errors = this.checkJson(qs.parse(field), schema, errors);
+                errors = this.checkPartialJson(qs.parse(field), schema, errors);
             } else if (schema.properties[field].type === "object") {
+                this.logger.trace("Checking object");
                 // re-build a full JSON from its key and value
                 let parameterObj = {};
                 parameterObj[field] = parameters[field];
-                errors = this.checkJson(parameterObj, schema, errors);
+                errors = this.checkPartialJson(parameterObj, schema, errors);
             }
         }
 
@@ -77,16 +94,90 @@ class Validator {
     }
 
     /**
+     * Check all the paths exist in the schema
+     *
+     * @param {Object} paths
+     * @param {Object} schema
+     * @returns {Boolean}
+     */
+    arePathsValid (paths, schema) {
+        let valid = true;
+
+        for (let path of paths) {
+            if (!this.isPathValid(path, schema)) {
+                valid = false;
+            }
+        }
+
+        return valid;
+    }
+
+    /**
+     * Check the path exists in the schema
+     *
+     * @param {Object} path
+     * @param {Object} schema
+     * @returns {Boolean}
+     */
+    isPathValid (path, schema) {
+        let base = {};
+        Object.assign(base, schema.properties);
+
+        for (let key of this.getKeys(path)) {
+            this.logger.trace(`Checking ${key} is in schema`);
+
+            if (key in base) {
+                base = base[key].properties;
+            } else {
+                this.logger.error(`Key ${key} not found in schema`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Recursive method to get a list of elements composing a path
+     *
+     * @param {Object} path
+     * @param {Array} keys
+     * @returns {Array}
+     */
+    getKeys (path, keys) {
+        if (!keys) {
+            keys = [];
+        }
+
+        for (let key in path) {
+            if (path.hasOwnProperty(key)) {
+                keys.push(key);
+                // jshint -W073
+                if (typeof(path[key]) === "object") {
+                    this.getKeys(path[key], keys);
+                }
+                // jshint +W073
+            }
+        }
+
+        return keys;
+    }
+
+    /**
      * JSON schema validator for fields, handle '-'
      * append to errors, should probably return a boolean and log them
-     * @return list
+     *
+     * @param {Object} parameter
+     * @param {Object} schema
+     * @param {Array} errors
+     * @returns {Array}
      */
-    checkJson (parameter, schema, errors) {
+    checkPartialJson (parameter, schema, errors) {
         let field = _.keys(parameter)[0];
         let value = _.values(parameter)[0];
 
         if (!this.isJsonSchemaValid(value, schema.properties[field])) {
-            errors.push(`sort field ${JSON.stringify(parameter)} not valid`);
+            errors.push(`field ${JSON.stringify(parameter)} not valid`);
         }
 
         return errors;

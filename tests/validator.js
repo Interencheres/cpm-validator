@@ -186,4 +186,64 @@ describe("Core validators", function () {
             validator.areFieldsValid(payload, schema).should.be.false;
         });
     });
+
+    describe("Check isPathValid", function () {
+        it("Valid path", function () {
+            let payload = {
+                options: {
+                    name: { first: "" }
+                }
+            };
+            validator.isPathValid(payload, schema).should.be.true;
+        });
+        it("Valid path regardless of its invalid type", function () {
+            let payload = {
+                options: {
+                    name: { first: 100 }
+                }
+            };
+            validator.isPathValid(payload, schema).should.be.true;
+        });
+        it("Valid partial path", function () {
+            let payload = {
+                options: {
+                    name: ""
+                }
+            };
+            validator.isPathValid(payload, schema).should.be.true;
+        });
+        it("Valid paths", function () {
+            let payload = [
+                {
+                    name: { first: "" }
+                },
+                {
+                    description: ""
+                }
+            ];
+            validator.arePathsValid(payload, schema).should.be.true;
+        });
+        it("Invalid path", function () {
+            let payload = {
+                options: {
+                    foo: ""
+                }
+            };
+            validator.isPathValid(payload, schema).should.be.false;
+        });
+        it("One invalid path", function () {
+            let payload = [
+                {
+                    name: { first: "" }
+                },
+                {
+                    description: ""
+                },
+                {
+                    name: { foo: "" }
+                }
+            ];
+            validator.arePathsValid(payload, schema).should.be.false;
+        });
+    });
 });
