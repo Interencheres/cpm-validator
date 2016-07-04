@@ -10,8 +10,8 @@ class Validator {
     }
 
     /**
-     * @param {string} value
-     * @returns {boolean}
+     * @param {String} value
+     * @returns {Boolean}
      */
     isInt (value) {
         let numValue = Number(value);
@@ -22,9 +22,9 @@ class Validator {
     }
 
     /**
-     * @param {string} value
+     * @param {String} value
      * @param {Array} list
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     inList (value, list) {
         let values = value.split(",");
@@ -42,7 +42,7 @@ class Validator {
     /**
      * @param {Object} json
      * @param {Object} schema
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     isJsonSchemaValid (json, schema) {
         let validate = jsonValidator(schema, { verbose: true, greedy: true });
@@ -58,7 +58,7 @@ class Validator {
     /**
      * @param {Object} parameters
      * @param {Object} schema
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     areFieldsValid (parameters, schema) {
         let errors = [];
@@ -98,7 +98,7 @@ class Validator {
      *
      * @param {Object} paths
      * @param {Object} schema
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     arePathsValid (paths, schema) {
         let valid = true;
@@ -117,7 +117,7 @@ class Validator {
      *
      * @param {Object} path
      * @param {Object} schema
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     isPathValid (path, schema) {
         let base = {};
