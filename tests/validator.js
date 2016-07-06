@@ -215,6 +215,9 @@ describe("Core validators", function () {
         it("Valid paths", function () {
             let payload = [
                 {
+                    created: ""
+                },
+                {
                     name: { first: "" }
                 },
                 {
