@@ -124,8 +124,9 @@ class Validator {
         Object.assign(base, schema.properties);
 
         for (let key of this.getKeys(path)) {
-            this.logger.trace(`Checking ${key} is in schema`);
+            key = key.replace(/^-/, "");
 
+            this.logger.trace(`Checking ${key} is in schema`);
             if (key in base) {
                 base = base[key].properties;
             } else {
