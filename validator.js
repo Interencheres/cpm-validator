@@ -96,7 +96,7 @@ class Validator {
     /**
      * Check all the paths exist in the schema
      *
-     * @param {Object} paths
+     * @param {Array} paths
      * @param {Object} schema
      * @returns {Boolean}
      */
