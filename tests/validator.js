@@ -215,11 +215,21 @@ describe("Core validators", function () {
         it("Valid paths", function () {
             let payload = [
                 {
+                    created: ""
+                },
+                {
                     name: { first: "" }
                 },
                 {
                     description: ""
                 }
+            ];
+            validator.arePathsValid(payload, schema).should.be.true;
+        });
+        it("Valid paths from string", function () {
+            let payload = [
+                "name[first]",
+                "description"
             ];
             validator.arePathsValid(payload, schema).should.be.true;
         });

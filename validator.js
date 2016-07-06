@@ -96,7 +96,7 @@ class Validator {
     /**
      * Check all the paths exist in the schema
      *
-     * @param {Object} paths
+     * @param {Array} paths
      * @param {Object} schema
      * @returns {Boolean}
      */
@@ -104,7 +104,13 @@ class Validator {
         let valid = true;
 
         for (let path of paths) {
-            if (!this.isPathValid(path, schema)) {
+            let pathToCheck = path;
+            if (typeof path !== "object") {
+                this.logger.trace("converting to object");
+                pathToCheck = qs.parse(path);
+            }
+
+            if (!this.isPathValid(pathToCheck, schema)) {
                 valid = false;
             }
         }
@@ -124,9 +130,13 @@ class Validator {
         Object.assign(base, schema.properties);
 
         for (let key of this.getKeys(path)) {
-            this.logger.trace(`Checking ${key} is in schema`);
+            key = key.replace(/^-/, "");
+            if (["sort", "id", "created"].indexOf(key) !== -1) {
+                continue;
+            }
 
-            if (key in base) {
+            this.logger.trace(`Checking ${key} is in schema`);
+            if (_.has(base, key)) {
                 base = base[key].properties;
             } else {
                 this.logger.error(`Key ${key} not found in schema`);
