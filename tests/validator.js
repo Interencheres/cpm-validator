@@ -223,6 +223,13 @@ describe("Core validators", function () {
             ];
             validator.arePathsValid(payload, schema).should.be.true;
         });
+        it("Valid paths from string", function () {
+            let payload = [
+                "name[first]",
+                "description"
+            ];
+            validator.arePathsValid(payload, schema).should.be.true;
+        });
         it("Invalid path", function () {
             let payload = {
                 options: {
