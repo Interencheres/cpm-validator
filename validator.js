@@ -125,6 +125,9 @@ class Validator {
 
         for (let key of this.getKeys(path)) {
             key = key.replace(/^-/, "");
+            if (["sort", "id", "created"].indexOf(key) !== -1) {
+                continue;
+            }
 
             this.logger.trace(`Checking ${key} is in schema`);
             if (key in base) {
