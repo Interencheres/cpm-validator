@@ -130,7 +130,7 @@ class Validator {
             }
 
             this.logger.trace(`Checking ${key} is in schema`);
-            if (key in base) {
+            if (_.has(base, key)) {
                 base = base[key].properties;
             } else {
                 this.logger.error(`Key ${key} not found in schema`);
