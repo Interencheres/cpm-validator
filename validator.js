@@ -104,7 +104,13 @@ class Validator {
         let valid = true;
 
         for (let path of paths) {
-            if (!this.isPathValid(path, schema)) {
+            let pathToCheck = path;
+            if (typeof path !== "object") {
+                this.logger.trace("converting to object");
+                pathToCheck = qs.parse(path);
+            }
+
+            if (!this.isPathValid(pathToCheck, schema)) {
                 valid = false;
             }
         }
