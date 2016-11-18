@@ -35,7 +35,7 @@
   ],
   "homepage": "https://github.com/Interencheres/cpm-validator#readme",
   "engines": {
-    "node": "4.2.x"
+    "node": ">=4.2"
   },
   "dependencies": {
     "is-my-json-valid": "^2.13.1",
