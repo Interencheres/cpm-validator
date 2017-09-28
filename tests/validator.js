@@ -43,6 +43,16 @@ describe("Core validators", function () {
         });
     });
 
+    describe("External reference", function () {
+        it("external reference", function () {
+            validator.isExternalReference("09-35002-201301251900090000-9852").should.be.true;
+        });
+
+        it("invalid external reference", function () {
+            validator.isExternalReference("some-stuff").should.be.false;
+        });
+    });
+
     describe("Invalidate integer", function () {
         it("float", function () {
             validator.isInt(34.5).should.be.false;

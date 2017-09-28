@@ -13,6 +13,14 @@ class Validator {
      * @param {String} value
      * @returns {Boolean}
      */
+    isExternalReference (value) {
+        return /[0-9]{2}-[0-9]{5}-[0-9]{18}-[0-9]{4}/.test(value);
+    }
+
+    /**
+     * @param {String} value
+     * @returns {Boolean}
+     */
     isInt (value) {
         let numValue = Number(value);
         let isBoolean = (typeof value === "boolean");
