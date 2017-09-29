@@ -43,12 +43,12 @@
     "qs": "^6.2.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
+    "chai": "^4.1.2",
     "coveralls": "^2.11.4",
     "cpm-logger": "git+https://github.com/Interencheres/cpm-logger.git#v1.0.0",
     "istanbul": "^0.4.0",
     "jscs": "^3.0.5",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.4"
+    "mocha": "^3.5.3"
   }
 }
