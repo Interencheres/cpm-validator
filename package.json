@@ -38,7 +38,7 @@
     "node": ">=4.2"
   },
   "dependencies": {
-    "is-my-json-valid": "^2.13.1",
+    "is-my-json-valid": "2.20.0",
     "lodash": "^4.13.1",
     "qs": "^6.2.0"
   },
