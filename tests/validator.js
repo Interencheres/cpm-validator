@@ -158,6 +158,23 @@ describe("Core validators", function () {
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
         });
+        it("missing required field", function () {
+            let payload = {
+                name: { first: "this is my name" },
+                options: {
+                    name: { first: "this is my name" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.false;
+        });
+        it("missing required subfield", function () {
+            let payload = {
+                name: { first: "this is my name" },
+                status: {},
+                options: {}
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.false;
+        });
     });
 
     describe("Check areFieldsValid", function () {
