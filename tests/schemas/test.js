@@ -33,6 +33,18 @@ module.exports = {
         status: {
             type: "object"
         },
+        adress: {
+            anyOf: [
+                { type: "null" },
+                {
+                    type: "object",
+                    oneOf: [
+                        { required: ["country"] },
+                        { required: ["street"] }
+                    ]
+                }
+            ]
+        },
         options: {
             required: ["name"],
             type: "object",

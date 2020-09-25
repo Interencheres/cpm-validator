@@ -120,6 +120,43 @@ describe("Core validators", function () {
             };
             validator.isJsonSchemaValid(payload, schema).should.be.true;
         });
+        it("oneOf with street", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: {
+                    street: "rue du Pont-Neuf"
+                },
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
+        it("oneOf with country", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: {
+                    country: "FRANCE"
+                },
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
+        it("oneOf is null", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: null,
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
     });
 
     describe("Invalidate schema", function () {
