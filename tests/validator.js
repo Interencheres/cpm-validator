@@ -131,6 +131,9 @@ describe("Core validators", function () {
             let payload = {
                 name: { first: "" },
                 status: {},
+                options: {
+                    name: { first: "this is my name" }
+                },
                 foo: ""
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
@@ -138,14 +141,20 @@ describe("Core validators", function () {
         it("wrong key in object field", function () {
             let payload = {
                 name: { first: "", third: "" },
-                status: {}
+                status: {},
+                options: {
+                    name: { first: "this is my name" }
+                }
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
         });
         it("wrong type for object field", function () {
             let payload = {
                 name: { first: 1 },
-                status: {}
+                status: {},
+                options: {
+                    name: { first: "this is my name" }
+                }
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
         });
