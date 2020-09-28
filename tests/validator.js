@@ -120,6 +120,43 @@ describe("Core validators", function () {
             };
             validator.isJsonSchemaValid(payload, schema).should.be.true;
         });
+        it("oneOf with street", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: {
+                    street: "rue du Pont-Neuf"
+                },
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
+        it("oneOf with country", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: {
+                    country: "FRANCE"
+                },
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
+        it("oneOf is null", function () {
+            let payload = {
+                name: { first: "" },
+                status: {},
+                adress: null,
+                options: {
+                    name: { first: "fubar" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.true;
+        });
     });
 
     describe("Invalidate schema", function () {
@@ -131,6 +168,9 @@ describe("Core validators", function () {
             let payload = {
                 name: { first: "" },
                 status: {},
+                options: {
+                    name: { first: "this is my name" }
+                },
                 foo: ""
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
@@ -138,14 +178,37 @@ describe("Core validators", function () {
         it("wrong key in object field", function () {
             let payload = {
                 name: { first: "", third: "" },
-                status: {}
+                status: {},
+                options: {
+                    name: { first: "this is my name" }
+                }
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
         });
         it("wrong type for object field", function () {
             let payload = {
                 name: { first: 1 },
-                status: {}
+                status: {},
+                options: {
+                    name: { first: "this is my name" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.false;
+        });
+        it("missing required field", function () {
+            let payload = {
+                name: { first: "this is my name" },
+                options: {
+                    name: { first: "this is my name" }
+                }
+            };
+            validator.isJsonSchemaValid(payload, schema).should.be.false;
+        });
+        it("missing required subfield", function () {
+            let payload = {
+                name: { first: "this is my name" },
+                status: {},
+                options: {}
             };
             validator.isJsonSchemaValid(payload, schema).should.be.false;
         });

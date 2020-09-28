@@ -1,12 +1,11 @@
 "use strict";
 
 module.exports = {
-    required: true,
+    required: ["name", "status", "options"],
     type: "object",
     additionalProperties: false,
     properties: {
         name: {
-            required: true,
             type: "object",
             additionalProperties: false,
             anyOf: [
@@ -15,33 +14,39 @@ module.exports = {
             ],
             properties: {
                 first: {
-                    required: false,
                     type: "string"
                 },
                 second: {
-                    required: false,
                     type: "string"
                 }
             }
         },
         nonfloating: {
-            required: false,
             type: "integer"
         },
         floating: {
-            required: false,
             type: "number"
         },
         description: {
-            required: false,
             type: "string"
         },
         status: {
-            required: true,
             type: "object"
         },
+        adress: {
+            anyOf: [
+                { type: "null" },
+                {
+                    type: "object",
+                    oneOf: [
+                        { required: ["country"] },
+                        { required: ["street"] }
+                    ]
+                }
+            ]
+        },
         options: {
-            required: true,
+            required: ["name"],
             type: "object",
             additionalProperties: false,
             anyOf: [
@@ -49,7 +54,6 @@ module.exports = {
             ],
             properties: {
                 name: {
-                    required: true,
                     type: "object",
                     additionalProperties: false,
                     anyOf: [
@@ -58,11 +62,9 @@ module.exports = {
                     ],
                     properties: {
                         first: {
-                            required: false,
                             type: "string"
                         },
                         second: {
-                            required: false,
                             type: "string"
                         }
                     }
